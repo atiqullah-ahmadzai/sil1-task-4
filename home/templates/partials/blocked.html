@@ -1,0 +1,39 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Block IPs 
+            <span style="float:right"> <button class="btn btn-warning btn-sm"> Force Update XDP Firewall </button></span> 
+        </h5>
+        <p class="card-text">All blocked IPs</p>
+        
+        
+        <table class="table table-striped table-bordered table-hover mt-3" id="blockedTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Source IP</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+        function update_blocked_table(data)
+        {
+            $("#blockedTable tbody").empty();
+            for (var i = 0; i < data.length; i++)
+            {
+                var row = "<tr>";
+                row += "<td>" + data[i].id + "</td>";
+                row += "<td>" + data[i].ip + "</td>";
+                row += "<td>" + data[i].status + "</td>";
+                row += "</tr>";
+                $("#blockedTable tbody").append(row);
+            }
+        }
+
+</script>

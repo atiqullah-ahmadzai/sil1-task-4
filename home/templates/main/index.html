@@ -63,7 +63,7 @@
                     <div class="col-md-4">
                         <button class="btn btn-primary me-2" id="startButton">Start</button>
                         <button class="btn btn-danger me-2" id="stopButton" style="display:none">Stop</button>
-                        <button class="btn btn-danger" id="clearButton">Clear Database</button>
+                        <button class="btn btn-warning" id="clearButton">Clear Database</button>
                     </div>
                     
 
@@ -103,8 +103,10 @@
             <div class="col-4">
                 
                 {% include 'partials/graph_1.html' %}
+                <br>
                 {% include 'partials/graph_2.html' %}
-                
+                <br>
+                {% include 'partials/blocked.html' %}
                 
             </div>
         </div>
@@ -193,6 +195,7 @@
                             }
                             draw_graph_1(response.graphs.graph_1);
                             draw_graph_2(response.graphs.graph_2);
+                            update_blocked_table(response.blocked);
                             
                             if(response.settings.cic_status == true){
                                 $("#startButton").hide();
@@ -203,6 +206,8 @@
                                 $("#startButton").show();
                                 $("#stopButton").hide();
                             }
+
+                            $("#networkInterfaceSelect").val(response.settings.interface);
                         }
                     });
                 }

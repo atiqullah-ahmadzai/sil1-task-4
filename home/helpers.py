@@ -1,6 +1,6 @@
 import subprocess
 from datetime import datetime, timedelta, timezone
-from home.models import FlowData
+from home.models import FlowData, Settings
 from django.db.models.functions import TruncMinute
 from django.db.models import Count
 import numpy as np
@@ -69,3 +69,16 @@ def check_cic_process():
     if 'cicflowmeter' in str(out):
         return True
     return False
+
+def create_config(key,value):
+    if Settings.objects.filter(config_key=key).exists():
+        return Settings.objects.filter(config_key=key).update(config_value=value)
+    
+    setting = Settings.objects.create(config_key=key,config_value=value)
+    setting.save()
+    return setting
+
+def get_config(key):
+    if Settings.objects.filter(config_key=key).exists():
+        return Settings.objects.filter(config_key=key).first().config_value
+    return None
