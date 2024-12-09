@@ -62,3 +62,10 @@ def predict_traffic(json_data):
 
     prediction = model.predict(X)
     return prediction[0]
+
+def check_cic_process():
+    process = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = process.communicate()
+    if 'cicflowmeter' in str(out):
+        return True
+    return False

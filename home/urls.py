@@ -8,4 +8,5 @@ urlpatterns = [
     path('start_interface', views.start_interface, name='start_interface'),
     path('get_data', views.get_data, name='get_data'),
     path('clear_db', views.clear_db, name='clear_db'),
+    path('stop_interface', views.stop_interface, name='stop_interface'),
 ]

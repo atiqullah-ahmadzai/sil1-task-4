@@ -1,6 +1,6 @@
 # Create virtual env
 
-python3.x -m venv .env
+python3.11.10 -m venv .env
 
 windows: .env\Script\activate
 
@@ -16,12 +16,9 @@ cd cicflowmeter
 
 poetry install
 
-
 # Run Server
 
 python manage.py runserver
-
-
 
 # Manual CIC Flow Meter Testing
 
