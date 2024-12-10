@@ -1,25 +1,57 @@
-# Create virtual env
+# Project Setup Guide
 
+## Create Virtual Environment
+
+```sh
 python3.11.10 -m venv .env
+```
 
-windows: .env\Script\activate
+### Activate Virtual Environment
 
-linux: source .env/bin/activate
+- **Windows**:
+  ```sh
+  .env\Scripts\activate
+  ```
+- **Linux**:
+  ```sh
+  source .env/bin/activate
+  ```
 
-# install requirements
+## Install Requirements
 
+```sh
 pip install -r requirements.txt
+```
 
-# Configure CIC Flow Meter
+## Configure CIC Flow Meter
 
+```sh
 cd cicflowmeter
-
 poetry install
+```
 
-# Run Server
+## Database Migrations
 
+### Make Migrations
+
+```sh
+python manage.py makemigrations
+```
+
+### Apply Migrations
+
+```sh
+python manage.py migrate
+```
+
+## Run Server
+
+```sh
 python manage.py runserver
+```
 
-# Manual CIC Flow Meter Testing
+## Manual CIC Flow Meter Testing
 
+```sh
 cicflowmeter -i "WiFi 2" -u http://localhost:8000/post_flow
+```
