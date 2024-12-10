@@ -6,6 +6,8 @@
 python3.11.10 -m venv .env
 ```
 
+**Note:** While you may use your preferred Python version, it is recommended to use Python 3.11.\* to ensure compatibility with dependency packages.
+
 ### Activate Virtual Environment
 
 - **Windows**:
