@@ -1,1 +1,55 @@
 \chapter{Methods}\label{chap:methods}
+\section{Task 1: Configuration of eBPF/XDP }
+In this section, we describe the steps to download, configure, and use the xdp-tools from the XDP project. The tools we focus on are xdp-filter and xdp-dump.
+
+\subsection{Downloading and Configuring xdp-tools}
+To begin, navigate to the xdp-tools repository on GitHub at \url{https://github.com/xdp-project/xdp-tools}. Clone the repository using the following command:
+\begin{verbatim}
+git clone https://github.com/xdp-project/xdp-tools.git
+\end{verbatim}
+
+Next, navigate to the cloned directory and follow the instructions in the README file to build and install the tools:
+\begin{verbatim}
+cd xdp-tools
+make
+sudo make install
+\end{verbatim}
+
+\subsection{xdp-filter}
+The xdp-filter tool allows you to filter packets based on various criteria. To use xdp-filter, navigate to the xdp-filter directory:
+\begin{verbatim}
+cd xdp-tools/xdp-filter
+\end{verbatim}
+
+You can run example commands to filter packets. For instance, to filter packets based on a specific IP address, use:
+\begin{verbatim}
+sudo ./xdp-filter --ip 192.168.1.1
+\end{verbatim}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{../images/uni-logo.png}
+\caption{Example output of xdp-filter filtering packets by IP address}
+\label{fig:xdp-filter-example}
+\end{figure}
+
+\subsection{xdp-dump}
+The xdp-dump tool is used to dump packet data for analysis. Navigate to the xdp-dump directory:
+\begin{verbatim}
+cd xdp-tools/xdp-dump
+\end{verbatim}
+
+To dump packets, you can use the following command:
+\begin{verbatim}
+sudo ./xdp-dump
+\end{verbatim}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\textwidth]{../images/uni-logo.png}
+\caption{Example output of xdp-dump showing dumped packet data}
+\label{fig:xdp-dump-example}
+\end{figure}
+
+These tools provide powerful capabilities for filtering and analyzing network packets using XDP.
+

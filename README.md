@@ -14,7 +14,7 @@ python3.11.10 -m venv .env
   ```sh
   .env\Scripts\activate
   ```
-- **Linux**:
+- **Linux/MacOS**:
   ```sh
   source .env/bin/activate
   ```
@@ -35,6 +35,9 @@ poetry install
 ## Database Migrations
 
 ### Make Migrations
+
+Ensure that Apache and MySQL servers are running before performing migrations.
+From the main directory, run the following command:
 
 ```sh
 python manage.py makemigrations
