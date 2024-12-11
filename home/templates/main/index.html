@@ -34,10 +34,10 @@
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <div class="col-md-8">
+                <div class="col-md-6">
                     <a class="navbar-brand" href="#">Real Time Network Monitor</a>
                 </div>
-                <div class="col-md-4 row">
+                <div class="col-md-6 row">
                     <div class="col-md-4">
                         <select class="form-select" name="num_records" id="num-records">
                             <option value="0">Number of records</option>
@@ -206,8 +206,9 @@
                                 $("#startButton").show();
                                 $("#stopButton").hide();
                             }
-
-                            $("#networkInterfaceSelect").val(response.settings.interface);
+                            if (response.settings.interface != null && response.settings.interface != "" && response.settings.interface != "False"){
+                                $("#networkInterfaceSelect").val(response.settings.interface);
+                            }
                         }
                     });
                 }

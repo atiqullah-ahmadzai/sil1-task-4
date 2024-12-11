@@ -32,15 +32,7 @@ def post_flow(request):
 @api_view(['POST'])
 def start_interface(request):
     interface = request.data.get('interface')
-    cicflowmeter_path = os.path.join(os.path.dirname(sys.executable), 'cicflowmeter')
-    command = [
-        cicflowmeter_path,
-        "-i", interface,
-        "-u", "http://localhost:8000/post_flow"
-    ]
-
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    print("cicflowmeter is now running in the background with PID:", process.pid)
+    process   = start_cicflowmeter(interface)
 
     create_config('interface',interface)
     create_config('cic_status',True)
@@ -56,23 +48,12 @@ def clear_db(request):
 @api_view(['GET'])
 def stop_interface(request):
     
-    process = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = process.communicate()
-    out = out.decode('utf-8', errors='replace')
-    
-    for line in out.splitlines():
-        if 'cicflowmeter' in line:
-            print(line)
-            parts = line.split(None, 10)  
-            if len(parts) > 1:
-                pid = int(parts[1])
-                os.kill(pid, 9)
-                return Response({"message": "cicflowmeter has been stopped!"})
+    stop_cicflowmeter()
             
     create_config('interface',False)
     create_config('cic_status',False)
     
-    return Response({"message": "cicflowmeter is not running!"})
+    return Response({"message": "cicflowmeter has been stopped!"})
 
 
 @api_view(['GET'])

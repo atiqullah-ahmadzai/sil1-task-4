@@ -7,12 +7,13 @@ import numpy as np
 import joblib
 import pyshark
 import asyncio
+import platform
+import psutil
+import os, sys
 
 def get_interfaces():
-    import psutil
 
     addrs = psutil.net_if_addrs()
-    
     return addrs
 
 ## Graphs ##
@@ -64,11 +65,31 @@ def predict_traffic(json_data):
     return prediction[0]
 
 def check_cic_process():
-    process = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = process.communicate()
-    if 'cicflowmeter' in str(out):
-        return True
+    os_name = platform.system()
+    
+        
+    if os_name == "Windows":
+        process = subprocess.run(
+            ['wmic', 'process', 'where', "commandline like '%cicflowmeter%'", 'get', 'processid,caption,commandline'],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+
+        if "Scripts\\\\cicflowmeter" in process.stdout:
+            return True
+        
+    elif os_name == "Darwin" or os_name == "Linux":
+        process = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = process.communicate()
+        if 'cicflowmeter' in str(out):
+            return True
+
+    else:
+        print(f"Running on an unknown OS: {os_name}")
+    
     return False
+
 
 def create_config(key,value):
     if Settings.objects.filter(config_key=key).exists():
@@ -82,3 +103,59 @@ def get_config(key):
     if Settings.objects.filter(config_key=key).exists():
         return Settings.objects.filter(config_key=key).first().config_value
     return None
+
+def start_cicflowmeter(interface):
+    os_name = platform.system()
+    if os_name == "Windows":
+        cicflowmeter_path = os.path.join(".env", "Scripts", "cicflowmeter.cmd")
+    else:
+        cicflowmeter_path = os.path.join(os.path.dirname(sys.executable), 'cicflowmeter')
+        
+    command = [
+        cicflowmeter_path,
+        "-i", interface,
+        "-u", "http://localhost:8000/post_flow"
+    ]
+
+    # execute the command
+    try:
+        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    except Exception as e:
+        print("Error starting cicflowmeter:", e)
+        process = None
+
+    print(process)
+    return process
+
+def stop_cicflowmeter():
+    os_name = platform.system()
+    if os_name == "Windows":
+        process = subprocess.run(
+                ['wmic', 'process', 'where', "commandline like '%cicflowmeter%'", 'get', 'processid,caption,commandline'],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+        if "Scripts\\\\cicflowmeter" in process.stdout:
+            output_lines = process.stdout.strip().split("\n")
+            if len(output_lines) > 1:  # Ensure there are results beyond headers
+                for line in output_lines[1:]:
+                    if "Scripts\\\\cicflowmeter" in line.strip():
+                        # Extract PID
+                        pid = line.strip().split()[-1]
+                        kill_result = subprocess.run(['taskkill', '/PID', pid, '/F'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                        print(pid)
+    else:
+        process = subprocess.Popen(['ps', 'aux'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = process.communicate()
+        out = out.decode('utf-8', errors='replace')
+        
+        for line in out.splitlines():
+            if 'cicflowmeter' in line:
+                parts = line.split(None, 10)  
+                if len(parts) > 1:
+                    pid = int(parts[1])
+                    os.kill(pid, 9)
+        
+        
+    return True
