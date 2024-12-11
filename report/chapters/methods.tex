@@ -25,12 +25,48 @@ You can run example commands to filter packets. For instance, to filter packets 
 \begin{verbatim}
 sudo ./xdp-filter --ip 192.168.1.1
 \end{verbatim}
+The figure \ref{fig:xdp-filter-example} shows the example output of xdp-filter filtering packets by IP address.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/xdp-filter-ip.jpeg}
+    \caption{Example output of xdp-filter filtering packets by IP address}
+    \label{fig:xdp-filter-example}
+\end{figure}
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{../images/uni-logo.png}
-\caption{Example output of xdp-filter filtering packets by IP address}
-\label{fig:xdp-filter-example}
+To load the xdp-filter program on a specific interface, use the following command:
+\begin{verbatim}
+    ./xdp-filter load eth0
+\end{verbatim}
+The figure \ref{fig:xdp-filter-load} shows the example output of xdp-filter loading the program on the eth0 interface.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/xdp-filter-load-eth0.jpeg}
+    \caption{Example output of xdp-filter loading the program on the eth0 interface}
+    \label{fig:xdp-filter-load}
+\end{figure}
+
+To poll for packets using xdp-filter, use the following command:
+\begin{verbatim}
+    ./xdp-filter poll
+\end{verbatim}
+The figure \ref{fig:xdp-filter-poll} shows the example output of xdp-filter polling for packets.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/xdp-filter-poll.jpeg}
+    \caption{Example output of xdp-filter polling for packets}
+    \label{fig:xdp-filter-poll}
+\end{figure}
+
+To check all the available options for xdp-filter, use the following command:
+\begin{verbatim}
+    ./xdp-filter --help  or ./xdp-filter -h or ./xdp-filter
+\end{verbatim}
+The figure \ref{fig:xdp-filter-help} shows the available options for xdp-filter.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/xdp-filter-help.jpeg}
+    \caption{Available options for xdp-filter}
+    \label{fig:xdp-filter-help}
 \end{figure}
 
 \subsection{xdp-dump}
@@ -39,17 +75,129 @@ The xdp-dump tool is used to dump packet data for analysis. Navigate to the xdp-
 cd xdp-tools/xdp-dump
 \end{verbatim}
 
-To dump packets, you can use the following command:
+To dump packets for a specific interface, use the following command:
 \begin{verbatim}
-sudo ./xdp-dump
+sudo ./xdp-dump -i eth0
 \end{verbatim}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{../images/uni-logo.png}
-\caption{Example output of xdp-dump showing dumped packet data}
-\label{fig:xdp-dump-example}
+The figure \ref{fig:xdp-dump-example} shows the example output of xdp-dump showing dumped packet data over eth0 interface.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/xdpdump-eth0.jpeg}
+    \caption{Example output of xdp-dump showing dumped packet data over eth0 interface}
+    \label{fig:xdp-dump-example}
 \end{figure}
 
 These tools provide powerful capabilities for filtering and analyzing network packets using XDP.
 
+\section{Task 2: Real-time Cycle}
+In this section, we describe the implementation of the real-time cycle for monitoring and analyzing network traffic. The backend logic is implemented using Django and the Django REST framework. The following functionalities are provided:
+
+\subsection{Backend Implementation}
+The backend logic is implemented in the \texttt{home/views.py} file. The main functionalities include capturing packets, predicting traffic, updating firewall status, and managing the monitoring process. Below is a brief overview of the key functions:
+
+\begin{itemize}
+    \item \textbf{home(request):} Renders the main index page with available network interfaces.
+    \item \textbf{post\_flow(request):} Handles POST requests to receive flow data, make predictions, and update firewall status.
+    \item \textbf{start\_interface(request):} Starts monitoring the specified network interface using cicflowmeter and updates configuration.
+    \item \textbf{clear\_db(request):} Clears all entries in the FlowData database.
+    \item \textbf{stop\_interface(request):} Stops the cicflowmeter process if it is running and updates configuration.
+    \item \textbf{get\_data(request):} Retrieves flow data, blocked IPs, and monitoring settings, and returns them in the response.
+\end{itemize}
+
+\subsection{Real-time Monitoring and Analysis}
+To achieve real-time monitoring and analysis, the following steps are performed:
+
+\begin{itemize}
+    \item Capture packets using cicflowmeter.
+    \item Flowmeterize packets.
+    \item Detect malicious packets with classifiers.
+    \item Filter out malicious packets in real-time.
+\end{itemize}
+
+The backend logic ensures that the system can capture, analyze, and respond to network traffic in real-time, providing an effective solution for network monitoring and security.
+
+\section{Task 3: Design front-end and interface}
+For the front-end and interface design, we will use the following technologies:
+\begin{itemize}
+    \item \textbf{Django:} A high-level Python web framework that encourages rapid development and clean, pragmatic design.
+    \item \textbf{HTML/CSS:} For designing the front-end interface.
+    \item \textbf{JavaScript:} For adding interactivity to the front-end.
+    \item \textbf{MySql:} For storing data and user information.
+\end{itemize}
+
+We designed a user-friendly interface that allows users to interact with the system, view real-time packet data, and manage the system's configuration.
+Network flows list, live traffic, chart for normal and ddos packets, start/stop capturing, clean database, select interface, number of records, and Block/Unblock IP are the main features of the front-end interface.
+The figure \ref{fig:front-end} shows the front-end interface of the system.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/front-end.png}
+    \caption{Front-end interface of the system}
+    \label{fig:front-end}
+\end{figure}
+User by selecting an interface and clicking on the start button can start the packet capturing. 
+The system will start capturing packets and show the live traffic in the live traffic section. 
+The figure \ref{fig:live-traffic} shows the live traffic in the live traffic section.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/live-traffic.png}
+    \caption{Live traffic in the live traffic section}
+    \label{fig:live-traffic}
+\end{figure}
+The system will also show the network flows list with ID, Source IP, Destination IP, Source Port, Destination Port, Flow Duration, TimeStamp, Model Result. Figure \ref{fig:network-flows} shows the network flows list.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/network-flows.png}
+    \caption{Network flows list}
+    \label{fig:network-flows}
+\end{figure}
+To have a comparison between normal and ddos packets, the system will show a pie chart for normal and ddos packets. The figure \ref{fig:normalDDOs} shows the chart for normal and ddos packets.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/packatecomparison.png}
+    \caption{Chart for normal and ddos packets}
+    \label{fig:normalDDOs}
+\end{figure}
+
+The user can also block or unblock an IP address by clicking on the Block/Unblock IP button. This functionality has been achieved by using XDP library. The figure \ref{fig:block-unblock} shows the block/unblock IP functionality.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{../images/block-unblock.png}
+    \caption{Block/Unblock IP functionality}
+    \label{fig:block-unblock}
+\end{figure}
+
+
+\section{Task 4: Containerization \& Orchestration}
+
+To run the system in a containerized environment, we will use Docker and Docker Compose.
+\subsection{Containerization with Docker}
+To containerize the system, follow these steps:
+
+\begin{enumerate}
+    \item \textbf{Install Docker:} First, install Docker on your system by following the instructions at \url{https://docs.docker.com/get-docker/}.
+    \item \textbf{Build the Docker image:} Run the following command in the terminal to build the Docker image:
+    \begin{verbatim}
+    docker build -t {group2-rtnm} .
+    \end{verbatim}
+    \item \textbf{Run the Docker container:} Once the image is built, run the container using the following command:
+    \begin{verbatim}
+    docker run -p 8000:8000 group2-rtnm
+    \end{verbatim}
+\end{enumerate}
+
+\subsection{Orchestration with Docker Compose}
+To orchestrate the containers, follow these steps:
+
+\begin{enumerate}
+    \item \textbf{Install Docker Compose:} Ensure Docker Compose is installed on your system. If not, follow the instructions at \url{https://docs.docker.com/compose/install/}.
+    \item \textbf{Start the services:} Run the following command to start the services defined in the \texttt{docker-compose.yml} file:
+    \begin{verbatim}
+        // For the first time
+    docker-compose up --build
+        // Other times
+    docker-compose up
+    \end{verbatim}
+\end{enumerate}
+
+The system will now be running in a containerized environment, allowing for easy deployment and management.
+To access the system, open a web browser and navigate to \url{http://localhost:8000/}.

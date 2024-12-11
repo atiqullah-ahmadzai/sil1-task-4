@@ -104,6 +104,8 @@ def get_data(request):
     rsp["graphs"]   = graphs
     rsp["settings"] = settings
     rsp["blocked"]  = list(blocked)
+    
+    print("Data:", rsp)
 
     return Response(rsp)
     

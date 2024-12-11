@@ -1,69 +1,75 @@
 <div class="card">
   <div class="card-body">
-      <h5 class="card-title">Live Traffice Flows</h5>
-      <p class="card-text">Realtime flows in one hour span</p>
-      <div id="chart_1"></div>
+    <h5 class="card-title">Live Traffic Flows</h5>
+    <p class="card-text">Realtime flows in a one-hour span</p>
+    <div id="chart_1"></div>
   </div>
 </div>
 
 <script>
+  function draw_graph_1(data) {
+    const width = 928;
+    const height = 500;
+    const marginTop = 30;
+    const marginRight = 0;
+    const marginBottom = 30;
+    const marginLeft = 40;
 
-    function draw_graph_1(data)
-    {
+    const x = d3
+      .scaleBand()
+      .domain(data.map((d) => d.time))
+      .range([marginLeft, width - marginRight])
+      .padding(0.1);
 
-        const width = 928;
-        const height = 500;
-        const marginTop = 30;
-        const marginRight = 0;
-        const marginBottom = 30;
-        const marginLeft = 40;
+    const y = d3
+      .scaleLinear()
+      .domain([0, d3.max(data, (d) => d.count)])
+      .range([height - marginBottom, marginTop]);
 
-        const x = d3.scaleBand()
-            .domain(data.map(d => d.time)) 
-            .range([marginLeft, width - marginRight])
-            .padding(0.1);
-        
-        const y = d3.scaleLinear()
-            .domain([0, d3.max(data, (d) => d.count)])
-            .range([height - marginBottom, marginTop]);
+    const svg = d3
+      .select("#chart_1")
+      .append("svg")
+      .attr("viewBox", `0 0 ${width} ${height}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("style", "width: 100%; height: auto;");
 
-        const svg = d3.select("#chart_1")
-            .append("svg")
-            .attr("viewBox", `0 0 ${width} ${height}`)
-            .attr("preserveAspectRatio", "xMidYMid meet")
-            .attr("style", "width: 100%; height: auto;");
-      
-        const line = d3.line()
-            .x(d => x(d.time) + x.bandwidth() / 2)
-            .y(d => y(d.count));
+    const line = d3
+      .line()
+      .x((d) => x(d.time) + x.bandwidth() / 2)
+      .y((d) => y(d.count));
 
-        svg.append("path")
-            .datum(data)
-            .attr("fill", "none")
-            .attr("stroke", "steelblue")
-            .attr("stroke-width", 1.5)
-            .attr("d", line);
-      
-        svg.append("g")
-            .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x).tickValues([])) // Remove bottom labels
-            .selectAll("text")
-            .style("font-size", "14px");
-      
-        svg.append("g")
-            .attr("transform", `translate(${marginLeft},0)`)
-            .call(d3.axisLeft(y).tickFormat((y) => (y).toFixed()))
-            .call(g => g.select(".domain").remove())
-            .call(g => g.selectAll("text").style("font-size", "14px"))
-            .call(g => g.append("text")
-                .attr("x", -marginLeft)
-                .attr("y", 10)
-                .attr("fill", "currentColor")
-                .attr("text-anchor", "start")
-                .style("font-size", "16px")
-                .text(""));
-      
-        $("#chart_1").html(svg.node());
-    }
+    svg
+      .append("path")
+      .datum(data)
+      .attr("fill", "none")
+      .attr("stroke", "steelblue")
+      .attr("stroke-width", 1.5)
+      .attr("d", line);
 
+    svg
+      .append("g")
+      .attr("transform", `translate(0,${height - marginBottom})`)
+      .call(d3.axisBottom(x).tickValues([])) // Remove bottom labels
+      .selectAll("text")
+      .style("font-size", "14px");
+
+    svg
+      .append("g")
+      .attr("transform", `translate(${marginLeft},0)`)
+      .call(d3.axisLeft(y).tickFormat((y) => y.toFixed()))
+      .call((g) => g.select(".domain").remove())
+      .call((g) => g.selectAll("text").style("font-size", "14px"))
+      .call((g) =>
+        g
+          .append("text")
+          .attr("x", -marginLeft)
+          .attr("y", 10)
+          .attr("fill", "currentColor")
+          .attr("text-anchor", "start")
+          .style("font-size", "16px")
+          .text("")
+      );
+
+    $("#chart_1").html(svg.node());
+  }
 </script>

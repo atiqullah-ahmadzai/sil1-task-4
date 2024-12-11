@@ -36,7 +36,6 @@ poetry install
 
 ### Make Migrations
 
-Ensure that Apache and MySQL servers are running before performing migrations.
 From the main directory, run the following command:
 
 ```sh
