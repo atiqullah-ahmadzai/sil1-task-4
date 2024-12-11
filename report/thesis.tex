@@ -23,6 +23,8 @@
 \usepackage{graphicx}
 \usepackage[doublespacing]{setspace}
 
+\usepackage{float} % Add this line in the preamble
+
 % better language support
 \usepackage{polyglossia}
 \setdefaultlanguage{english}
@@ -113,14 +115,14 @@
 % adjust for your liking
 \include{chapters/introduction}
 \include{chapters/methods}
-\include{chapters/results}
-\include{chapters/discussion}
+% \include{chapters/results}
+% \include{chapters/discussion}
 
 % -- Appendix (optional)
-\begin{appendices}
-    \input{appendix.tex}
-\end{appendices}
-\newpage
+% \begin{appendices}
+%     \input{appendix.tex}
+% \end{appendices}
+% \newpage
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -130,7 +132,7 @@
 \printbibliography
 
 % -- Eidesstattliche Erklärung (= Affadavit)
-\include{includes/eidesstattlicheErklaerung}
+% \include{includes/eidesstattlicheErklaerung}
 
 
 \end{document}
