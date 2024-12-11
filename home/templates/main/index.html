@@ -1,46 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Real Time Network Monitor</title>
     <!-- Include Bootstrap -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://d3js.org/d3.v4.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-      integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
-      integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
-      .BENIGN {
-        background-color: #28a745;
-        color: white;
-        padding: 3px;
-        border-radius: 10px;
-      }
-      .DDoS {
-        background-color: #dc3545;
-        color: white;
-        padding: 3px;
-        border-radius: 10px;
-      }
+        .BENIGN{
+            background-color: #28a745;
+            color: white;
+            padding: 3px;
+            border-radius: 10px;
+        }
+        .DDoS{
+            background-color: #dc3545;
+            color: white;
+            padding: 3px;
+            border-radius: 10px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+<body>
+    
+    
+    
     <!-- Main Content Section -->
     <div class="container-fluid">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -78,73 +67,50 @@
                     </div>
                     
 
-            <div class="col-md-4">
-              <select class="form-select me-2" id="networkInterfaceSelect">
-                {% for interface in interfaces %}
-                <option selected>{{ interface }}</option>
-                {% empty %}
-                <option selected value="0">No interface found!</option>
-                {% endfor %}
-              </select>
+                </div>
             </div>
-            <div class="col-md-4">
-              <button class="btn btn-primary me-2" id="startButton">
-                Start
-              </button>
-              <button
-                class="btn btn-danger me-2"
-                id="stopButton"
-                style="display: none"
-              >
-                Stop
-              </button>
-              <button class="btn btn-warning" id="clearButton">
-                Clear Database
-              </button>
+        </nav>
+        <br>
+        <!-- Table for displaying records -->
+        <div class="row">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title
+                        ">Network Flows</h5>
+                        <p class="card-text">This table displays the network flows in real time.</p>
+                        
+                        <table class="table table-striped table-bordered table-hover mt-3" id="recordsTable">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Source IP</th>
+                                    <th>Destination IP</th>
+                                    <th>Source Port</th>
+                                    <th>Destination Port</th>
+                                    <th>Flow Duration</th>
+                                    <th>Timestamp</th>
+                                    <th>Model Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
             </div>
-          </div>
-        </div>
-      </nav>
-      <br />
-      <!-- Table for displaying records -->
-      <div class="row">
-        <div class="col-8">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Network Flows</h5>
-              <p class="card-text">
-                This table displays the network flows in real time.
-              </p>
-
-              <table
-                class="table table-striped table-bordered table-hover mt-3"
-                id="recordsTable"
-              >
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Source IP</th>
-                    <th>Destination IP</th>
-                    <th>Source Port</th>
-                    <th>Destination Port</th>
-                    <th>Flow Duration</th>
-                    <th>Timestamp</th>
-                    <th>Model Result</th>
-                  </tr>
-                </thead>
-                <tbody></tbody>
-              </table>
+            <div class="col-4">
+                
+                {% include 'partials/graph_1.html' %}
+                <br>
+                {% include 'partials/graph_2.html' %}
+                <br>
+                {% include 'partials/blocked.html' %}
+                
             </div>
-          </div>
         </div>
-        <div class="col-4">
-          {% include 'partials/graph_1.html' %}
-          <br />
-          {% include 'partials/graph_2.html' %}
-          <br />
-          {% include 'partials/blocked.html' %}
-        </div>
-      </div>
+        
     </div>
     <script>
         $(document).ready(function(){
